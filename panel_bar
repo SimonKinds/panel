@@ -2,14 +2,6 @@
 
 . panel_colors
 
-battery_remaining()
-{
-  str=$(acpi --battery | cut -d, -f3 | cut -d' ' -f2,3)
-  echo "%{c}$str" | lemonbar -p -g 120x40+1700+20 -F "$FG_DEFAULT" -B "$BG" -f xft:inconsolata:size=10 &
-  sleep 3
-  kill $!
-}
-
 while read -r line ; do
 	case $line in
     V*)
@@ -65,6 +57,6 @@ while read -r line ; do
 			done
 			;;
 	esac
-  printf "%s\n" "%{c}${wm}%{r} ${vpn_status} | ${battery_percentage} | ${sys}"
+  printf "%s\n" "%{c}${wm}%{r} ${vpn_status} | %{A:panel_battery:}${battery_percentage}%{A} | ${sys}"
 
 done

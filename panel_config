@@ -1,1 +1,4 @@
+PANEL_HEIGHT=15
+PANEL_FIFO=/tmp/panel-fifo
+
 DEFAULT_VPN_CONFIG='mullvad_singapore'

@@ -1,8 +1,9 @@
 #!/bin/bash
 
 . panel_colors
+. panel_config
 
 str=$(acpi --battery | cut -d, -f3 | cut -d' ' -f2,3)
-echo "%{c}$str" | lemonbar -p -g 120x40+1700+20 -F "$FG_DEFAULT" -B "$BG" -f $FONT &
+echo "%{c}$str" | lemonbar -p -g 115x25+1760+$(($PANEL_HEIGHT + 5)) -F "$FG_DEFAULT" -B "$BG_LIGHT" -f $FONT &
 sleep 3
 kill $!

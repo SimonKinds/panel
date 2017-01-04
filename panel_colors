@@ -1,4 +1,5 @@
 BG="#1d1f21"
+BG_LIGHT="#55595C"
 FG_DEFAULT="#c5c8c6"
 FG_ACTIVE="#bdfeaa"
 FG_URGENT="#e79090"

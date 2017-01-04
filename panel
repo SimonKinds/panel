@@ -1,7 +1,6 @@
 #! /bin/bash
 
-PANEL_HEIGHT=15
-PANEL_FIFO=/tmp/panel-fifo
+. panel_config
 
 battery()
 {
