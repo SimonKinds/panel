@@ -1,0 +1,35 @@
+#! /bin/bash
+
+PANEL_HEIGHT=15
+PANEL_FIFO=/tmp/panel-fifo
+
+battery()
+{
+  while true; do
+    battery_percentage=$(acpi --battery | cut -d, -f2 | cut -d' ' -f2)
+    echo "B${battery_percentage}"
+    sleep 30
+  done
+}
+
+if [ $(pgrep -cx panel) -gt 1 ] ; then
+	printf "%s\n" "The panel is already running." >&2
+	exit 1
+fi
+
+trap 'trap - TERM; kill 0' INT TERM QUIT EXIT
+
+[ -e "$PANEL_FIFO" ] && rm "$PANEL_FIFO"
+mkfifo "$PANEL_FIFO"
+
+bspc subscribe report > "$PANEL_FIFO" &
+clock -sf 'S%H:%M %d-%m-%y' > "$PANEL_FIFO" &
+battery > "$PANEL_FIFO" &
+panel_vpn > "$PANEL_FIFO" &
+
+. panel_colors
+
+# right screen
+cat "$PANEL_FIFO" | panel_bar | lemonbar -g x15 -F "$FG_DEFAULT" -B "$BG" -f $FONT | sh &
+
+wait

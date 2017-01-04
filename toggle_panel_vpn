@@ -1,0 +1,15 @@
+#!/bin/sh
+
+. panel_config
+
+is_vpn_active()
+{
+  systemctl list-units | grep 'openvpn-client' &> /dev/null
+  return $?
+}
+
+if is_vpn_active; then
+  sudo systemctl stop openvpn-client@$DEFAULT_VPN_CONFIG
+else
+  sudo systemctl start openvpn-client@$DEFAULT_VPN_CONFIG
+fi

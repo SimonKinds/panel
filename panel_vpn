@@ -1,0 +1,30 @@
+#! /bin/bash
+
+. panel_colors
+. panel_config
+
+is_vpn_active()
+{
+  systemctl list-units | grep 'openvpn-client' | grep 'active' &> /dev/null
+  return $?
+}
+
+is_vpn_activating()
+{
+  systemctl list-units | grep 'openvpn-client' | grep 'activating' &> /dev/null
+  return $?
+}
+
+output_start="V%{A:toggle_panel_vpn:}"
+output_end="%{A}"
+
+while true; do
+  if is_vpn_active; then
+    echo "${output_start}%{F${FG_ACTIVE}}active%{F-}${output_end}"
+  elif is_vpn_activating; then
+    echo "${output_start}%{F${FG_DEFAULT}}starting%{F-}${output_end}"
+  else
+    echo "${output_start}%{F${FG_URGENT}}inactive%{F-}${output_end}"
+  fi
+  sleep 3
+done

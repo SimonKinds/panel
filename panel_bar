@@ -1,0 +1,70 @@
+#! /bin/sh
+
+. panel_colors
+
+battery_remaining()
+{
+  str=$(acpi --battery | cut -d, -f3 | cut -d' ' -f2,3)
+  echo "%{c}$str" | lemonbar -p -g 120x40+1700+20 -F "$FG_DEFAULT" -B "$BG" -f xft:inconsolata:size=10 &
+  sleep 3
+  kill $!
+}
+
+while read -r line ; do
+	case $line in
+    V*)
+      vpn_status="${line#?}"
+      ;;
+    B*)
+      battery_percentage="${line#?}"
+      ;;
+		S*)
+			# clock output
+			sys="${line#?}"
+			;;
+		W*)
+			# bspwm's state
+			wm=""
+			IFS=':'
+			set -- ${line#?}
+			while [ $# -gt 0 ] ; do
+				item=$1
+				name=${item#?}
+				case $item in
+					[fFoOuU]*)
+						case $item in
+							f*)
+								# free desktop
+								FG=$FG_DEFAULT
+								;;
+							F*)
+								# focused free desktop
+								FG=$FG_ACTIVE
+								;;
+							o*)
+								# occupied desktop
+								FG=$FG_DEFAULT
+								;;
+							O*)
+								# focused occupied desktop
+								FG=$FG_ACTIVE
+								;;
+							u*)
+								# urgent desktop
+								FG=$FG_URGENT
+								;;
+							U*)
+								# focused urgent desktop
+								FG=$FG_ACTIVE
+								;;
+						esac
+						wm="${wm}%{F${FG}}%{B${BG}} ● %{B-}%{F-}"
+						;;
+				esac
+				shift
+			done
+			;;
+	esac
+  printf "%s\n" "%{c}${wm}%{r} ${vpn_status} | ${battery_percentage} | ${sys}"
+
+done

@@ -1,0 +1,6 @@
+BG="#1d1f21"
+FG_DEFAULT="#c5c8c6"
+FG_ACTIVE="#bdfeaa"
+FG_URGENT="#e79090"
+
+FONT=xft:inconsolata:size=10
