@@ -1,7 +1,6 @@
-BG="#1d1f21"
-BG_LIGHT="#55595C"
-FG_DEFAULT="#c5c8c6"
+BG="#002b36"
+FG_DEFAULT="#93a1a1"
 FG_ACTIVE="#bdfeaa"
-FG_URGENT="#e79090"
+FG_URGENT="#dc322f"
 
-FONT=xft:inconsolata:size=10
+FONT=xft:SourceCodePro:size=10
